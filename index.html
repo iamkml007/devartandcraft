@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Art & Craft</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 40px;
+            background-color: rgba(15, 15, 15, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 15px 40px;
+            background-color: rgba(15, 15, 15, 0.95);
+        }
+
+        .logo {
+            color: #f5e8d0;
+            font-size: 28px;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #c9a86a;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 35px;
+        }
+
+        .nav-links a {
+            color: #f5e8d0;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #c9a86a;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #c9a86a;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background-color: #c9a86a;
+            color: #1a1a1a !important;
+            padding: 10px 25px;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-cta:hover {
+            background-color: #d8b982;
+            transform: translateY(-2px);
+        }
+
+        .nav-cta::after {
+            display: none;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 30px;
+            height: 3px;
+            background-color: #f5e8d0;
+            transition: 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1758&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -1;
+        }
+
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content {
+            max-width: 900px;
+            padding: 0 20px;
+            z-index: 2;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            color: #c9a86a;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-title span {
+            color: #c9a86a;
+        }
+
+        .hero-description {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            color: #f0f0f0;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 16px 35px;
+            font-size: 1.1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background-color: #c9a86a;
+            color: #1a1a1a;
+            border: 2px solid #c9a86a;
+        }
+
+        .btn-primary:hover {
+            background-color: #d8b982;
+            border-color: #d8b982;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            border-color: #c9a86a;
+            color: #c9a86a;
+            transform: translateY(-3px);
+        }
+
+        /* Categories Section */
+        .categories-section {
+            padding: 100px 40px;
+            background-color: #f9f5f0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.8rem;
+            color: #2d2d2d;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: #c9a86a;
+        }
+
+        .section-title p {
+            color: #666;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 20px auto 0;
+            line-height: 1.6;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            height: 300px;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-card:hover .category-overlay {
+            opacity: 1;
+        }
+
+        .category-image {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .category-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .category-card:hover .category-image img {
+            transform: scale(1.05);
+        }
+
+        .category-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px 20px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .category-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(201, 168, 106, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .view-btn {
+            background-color: #c9a86a;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover .view-btn {
+            transform: translateY(0);
+        }
+
+        .view-btn:hover {
+            background-color: #b89452;
+        }
+
+        /* Jumbotron Section */
+        .jumbotron-section {
+            padding: 120px 40px;
+            background: linear-gradient(rgba(20, 20, 20, 0.85), rgba(20, 20, 20, 0.9)), 
+                        url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .jumbotron-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .jumbotron-text {
+            z-index: 2;
+        }
+
+        .jumbotron-badge {
+            display: inline-block;
+            background-color: #c9a86a;
+            color: #1a1a1a;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .jumbotron-heading {
+            font-size: 3.2rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 25px;
+        }
+
+        .jumbotron-heading span {
+            color: #c9a86a;
+        }
+
+        .jumbotron-description {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            margin-bottom: 35px;
+            color: #e0e0e0;
+        }
+
+        .jumbotron-features {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .jumbotron-feature {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .jumbotron-feature i {
+            color: #c9a86a;
+            font-size: 1.3rem;
+        }
+
+        .jumbotron-feature span {
+            font-size: 1.1rem;
+        }
+
+        .jumbotron-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .jumbotron-image {
+            position: relative;
+            z-index: 2;
+        }
+
+        .jumbotron-img-container {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.5s ease;
+        }
+
+        .jumbotron-img-container:hover {
+            transform: translateY(-10px);
+        }
+
+        .jumbotron-img-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.8s ease;
+        }
+
+        .jumbotron-img-container:hover img {
+            transform: scale(1.05);
+        }
+
+        .jumbotron-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .jumbotron-stat {
+            text-align: center;
+        }
+
+        .jumbotron-stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #c9a86a;
+            margin-bottom: 5px;
+        }
+
+        .jumbotron-stat-label {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #aaa;
+        }
+
+        /* Footer Section */
+        .footer {
+            background-color: #0f0f0f;
+            color: #f0f0f0;
+            padding: 70px 40px 20px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-column h3 {
+            color: #fff;
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: #c9a86a;
+        }
+
+        .footer-logo {
+            color: #fff;
+            font-size: 28px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo span {
+            color: #c9a86a;
+        }
+
+        .footer-about p {
+            line-height: 1.7;
+            margin-bottom: 25px;
+            color: #aaa;
+            font-size: 0.95rem;
+        }
+
+        .social-media {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #2d2d2d;
+            border-radius: 50%;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .social-icon:hover {
+            background-color: #c9a86a;
+            transform: translateY(-3px);
+        }
+
+        .footer-nav {
+            list-style: none;
+        }
+
+        .footer-nav li {
+            margin-bottom: 12px;
+        }
+
+        .footer-nav a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        .footer-nav a:hover {
+            color: #c9a86a;
+            transform: translateX(5px);
+        }
+
+        .footer-nav a i {
+            font-size: 0.8rem;
+            color: #c9a86a;
+        }
+
+        .contact-info {
+            list-style: none;
+        }
+
+        .contact-info li {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+            color: #aaa;
+            font-size: 0.95rem;
+        }
+
+        .contact-info i {
+            color: #c9a86a;
+            font-size: 1rem;
+            margin-top: 3px;
+        }
+
+        .opening-hours {
+            margin-top: 10px;
+        }
+
+        .opening-hours strong {
+            color: #fff;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 25px;
+            border-top: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .copyright {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .footer-bottom-links a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-links a:hover {
+            color: #c9a86a;
+        }
+
+        /* Mobile Responsive Styles */
+        @media screen and (max-width: 1024px) {
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .nav-links {
+                gap: 25px;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .category-card {
+                height: 280px;
+            }
+            
+            .jumbotron-content {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+            
+            .jumbotron-heading {
+                font-size: 2.8rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 40px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .navbar {
+                padding: 20px;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background-color: rgba(15, 15, 15, 0.98);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 35px;
+                transition: right 0.5s ease;
+                z-index: 1000;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .hero-description {
+                font-size: 1.1rem;
+                padding: 0 10px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+                padding: 0 20px;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                text-align: center;
+            }
+            
+            .categories-section {
+                padding: 80px 20px;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            .category-card {
+                height: 250px;
+            }
+            
+            .category-name {
+                font-size: 1.3rem;
+                padding: 20px 15px;
+            }
+            
+            .jumbotron-section {
+                padding: 80px 20px;
+                background-attachment: scroll;
+            }
+            
+            .jumbotron-heading {
+                font-size: 2.4rem;
+            }
+            
+            .jumbotron-stats {
+                flex-wrap: wrap;
+                gap: 30px;
+            }
+            
+            .footer {
+                padding: 50px 20px 15px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 16px;
+                letter-spacing: 2px;
+            }
+            
+            .logo {
+                font-size: 24px;
+            }
+            
+            .categories-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .category-card {
+                height: 230px;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .category-name {
+                font-size: 1.2rem;
+                padding: 15px 10px;
+            }
+            
+            .jumbotron-heading {
+                font-size: 2rem;
+            }
+            
+            .jumbotron-buttons {
+                flex-direction: column;
+            }
+            
+            .jumbotron-buttons .btn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .jumbotron-stats {
+                flex-direction: column;
+                gap: 25px;
+            }
+            
+            .footer-bottom-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="#" class="logo">Wood<span>Craft</span></a>
+        
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#categories">Categories</a></li>
+            <li><a href="#collections">Collections</a></li>
+            <li><a href="#custom">Custom Work</a></li>
+            <li><a href="#about">Our Story</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#consultation" class="nav-cta">Book Consultation</a></li>
+        </ul>
+        
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        
+        <div class="hero-content">
+            <p class="hero-subtitle">Handcrafted Since 1995</p>
+            <h1 class="hero-title">Solid Wood Furniture<br><span>Built for Generations</span></h1>
+            <p class="hero-description">
+                We create timeless pieces from ethically sourced hardwood, blending artisan 
+                tradition with modern design. Each piece is crafted to become the heart of your home.
+            </p>
+            <div class="hero-buttons">
+                <a href="#categories" class="btn btn-primary">Explore Collection</a>
+                <a href="#custom" class="btn btn-secondary">Request Custom Design</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section" id="categories">
+        <div class="section-title">
+            <h2>Our Furniture Categories</h2>
+            <p>Explore our wide range of handcrafted solid wood furniture. Each piece is made with precision and care to last a lifetime.</p>
+        </div>
+        
+        <div class="categories-grid">
+            <!-- Bed -->
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="./bed.png" alt="Solid Wood Bed">
+                    <div class="category-overlay">
+                        <a href="#" class="view-btn">View Collection</a>
+                    </div>
+                </div>
+                <div class="category-name">Bed</div>
+            </div>
+            
+            <!-- Almirah -->
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="./almirah.png" alt="Wooden Almirah">
+                    <div class="category-overlay">
+                        <a href="#" class="view-btn">View Collection</a>
+                    </div>
+                </div>
+                <div class="category-name">Almirah</div>
+            </div>
+            
+            <!-- Bedside -->
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="./Amherst.PNG" alt="Bedside Table">
+                    <div class="category-overlay">
+                        <a href="#" class="view-btn">View Collection</a>
+                    </div>
+                </div>
+                <div class="category-name">Bedside</div>
+            </div>
+            
+            <!-- Cabinet -->
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="./cabinet.png" alt="Wooden Cabinet">
+                    <div class="category-overlay">
+                        <a href="#" class="view-btn">View Collection</a>
+                    </div>
+                </div>
+                <div class="category-name">Cabinet</div>
+            </div>
+            
+            <!-- Center Table -->
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="center-table.png" alt="Center Table">
+                    <div class="category-overlay">
+                        <a href="#" class="view-btn">View Collection</a>
+                    </div>
+                </div>
+                <div class="category-name">Center Table</div>
+            </div>
+            
+            <!-- Center Table with Stool -->
+            <!-- <div class="category-card">
+                <div class="category-image">
+                    <img src="https://images.unsplash.com/photo-1534768685088-49e7d742e4f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Center Table with Stools">
+                    <div class="category-overlay">
+                        <a href="#" class="view-btn">View Collection</a>
+                    </div>
+                </div>
+                <div class="category-name">Table with Stool</div>
+            </div> -->
+            
+            <!-- Chowki -->
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="./chowki.png" alt="Wooden Chowki">
+                    <div class="category-overlay">
+                        <a href="#" class="view-btn">View Collection</a>
+                    </div>
+                </div>
+                <div class="category-name">Chowki</div>
+            </div>
+            
+            <!-- Dining Set -->
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="./dining.png" alt="Dining Set">
+                    <div class="category-overlay">
+                        <a href="#" class="view-btn">View Collection</a>
+                    </div>
+                </div>
+                <div class="category-name">Dining Set</div>
+            </div>
+            
+            <!-- Dressing -->
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="./dressing.png" alt="Dressing Table">
+                    <div class="category-overlay">
+                        <a href="#" class="view-btn">View Collection</a>
+                    </div>
+                </div>
+                <div class="category-name">Dressing</div>
+            </div>
+            
+            <!-- Shoe Rack -->
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="./shoe-rack.png" alt="Shoe Rack">
+                    <div class="category-overlay">
+                        <a href="#" class="view-btn">View Collection</a>
+                    </div>
+                </div>
+                <div class="category-name">Shoe Rack</div>
+            </div>
+            
+            <!-- Trunk -->
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="./trunk.png" alt="Wooden Trunk">
+                    <div class="category-overlay">
+                        <a href="#" class="view-btn">View Collection</a>
+                    </div>
+                </div>
+                <div class="category-name">Trunk</div>
+            </div>
+            
+            <!-- TVC (TV Cabinet) -->
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="./tvc.png" alt="TV Cabinet">
+                    <div class="category-overlay">
+                        <a href="#" class="view-btn">View Collection</a>
+                    </div>
+                </div>
+                <div class="category-name">TVC</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Jumbotron Section -->
+    <section class="jumbotron-section" id="jumbotron">
+        <div class="jumbotron-content">
+            <div class="jumbotron-text">
+                <span class="jumbotron-badge">Limited Time Offer</span>
+                <h2 class="jumbotron-heading">Premium Solid Wood<br><span>Dining Collection</span></h2>
+                <p class="jumbotron-description">
+                    Experience the perfect blend of craftsmanship and design with our exclusive dining set collection. 
+                    Handcrafted from 100% solid oak, each piece is built to withstand decades of family gatherings and celebrations.
+                </p>
+                
+                <div class="jumbotron-features">
+                    <div class="jumbotron-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>100% Solid Oak Construction</span>
+                    </div>
+                    <div class="jumbotron-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Hand-finished with Natural Oils</span>
+                    </div>
+                    <div class="jumbotron-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>15-Year Warranty Included</span>
+                    </div>
+                    <div class="jumbotron-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Free Assembly & Delivery</span>
+                    </div>
+                </div>
+                
+                <div class="jumbotron-buttons">
+                    <a href="#" class="btn btn-primary">Shop Collection</a>
+                    <a href="#" class="btn btn-secondary">Learn More</a>
+                </div>
+                
+                <div class="jumbotron-stats">
+                    <div class="jumbotron-stat">
+                        <div class="jumbotron-stat-number">25+</div>
+                        <div class="jumbotron-stat-label">Years Experience</div>
+                    </div>
+                    <div class="jumbotron-stat">
+                        <div class="jumbotron-stat-number">5000+</div>
+                        <div class="jumbotron-stat-label">Happy Families</div>
+                    </div>
+                    <div class="jumbotron-stat">
+                        <div class="jumbotron-stat-number">100%</div>
+                        <div class="jumbotron-stat-label">Satisfaction</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="jumbotron-image">
+                <div class="jumbotron-img-container">
+                    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Premium Dining Set">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <!-- Company Info -->
+            <div class="footer-column">
+                <a href="#" class="footer-logo">Wood<span>Craft</span></a>
+                <div class="footer-about">
+                    <p>Creating timeless furniture from ethically sourced solid wood. Each piece is crafted with precision and passion to last for generations.</p>
+                </div>
+                <div class="social-media">
+                    <a href="#" class="social-icon" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="Pinterest">
+                        <i class="fab fa-pinterest-p"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Quick Links -->
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-nav">
+                    <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="#categories"><i class="fas fa-chevron-right"></i> Categories</a></li>
+                    <li><a href="#collections"><i class="fas fa-chevron-right"></i> Collections</a></li>
+                    <li><a href="#custom"><i class="fas fa-chevron-right"></i> Custom Work</a></li>
+                    <li><a href="#gallery"><i class="fas fa-chevron-right"></i> Gallery</a></li>
+                </ul>
+            </div>
+            
+            <!-- More Links -->
+            <div class="footer-column">
+                <h3>More Links</h3>
+                <ul class="footer-nav">
+                    <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                    <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Terms & Conditions</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Shipping Info</a></li>
+                </ul>
+            </div>
+            
+            <!-- Contact Info -->
+            <div class="footer-column">
+                <h3>Contact Info</h3>
+                <ul class="contact-info">
+                    <li>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>123 Woodcraft Avenue<br>Furniture District, NY 10001</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-phone"></i>
+                        <span>+1 (555) 123-4567</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-envelope"></i>
+                        <span>info@woodcraft.com</span>
+                    </li>
+                    <li class="opening-hours">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong>Opening Hours:</strong>
+                            <span>Mon-Fri: 9AM-6PM</span><br>
+                            <span>Saturday: 10AM-4PM</span><br>
+                            <span>Sunday: Closed</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="copyright">
+                <p>&copy; 2023 WoodCraft Furniture. All Rights Reserved.</p>
+            </div>
+            
+            <div class="footer-bottom-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+                <a href="#">Sitemap</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Hamburger menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (event) => {
+            const isClickInsideNav = navLinks.contains(event.target) || hamburger.contains(event.target);
+            if (!isClickInsideNav && navLinks.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
